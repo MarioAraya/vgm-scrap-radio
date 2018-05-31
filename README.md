@@ -2,7 +2,7 @@
 - Scrapp a site with vgm music and get albums and tracks.
 - Play each song or album in an HTML5 player
 - Can randomly play 1 album or 1 song
-- Find album/tracks in the VGM dtabase
+- Find album/tracks in the VGM database
 - Database stored, after successfully scrapp all the albums, in firebase DB
 
 ## addititional:
