@@ -21,6 +21,9 @@ The front-ent listener (the actual app) will be a python or a simple html5 <audi
 3.  Create user playlists
 4.  User comments on albums
 
+### Build with
+1. Cypress.io testint https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Test-files
+
 #### Sample songs that rocks:
 -   [https://downloads.khinsider.com/game-soundtracks/album/max-payne-pc-rip/02%2520max%2520payne%2520theme.mp3][3]
 -   [http://66.90.93.122/soundfiles/sega-saturn-ssf/street-fighter-alpha-warriors-dreams/T-1206G_15.mp3][4]

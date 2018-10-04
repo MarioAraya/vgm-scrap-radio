@@ -4,7 +4,8 @@
   "description": "- Scrapp a site with vgm music and get albums and tracks.\r - Play each song or album in an HTML5 player\r - Can randomly play 1 album or 1 song\r - Find album/tracks in the VGM database\r - Database stored, after successfully scrapp all the albums, in firebase DB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open"
   },
   "author": "marioaraya",
   "license": "ISC",
@@ -29,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/MarioAraya/vgm-scrap-radio/issues"
   },
-  "homepage": "https://github.com/MarioAraya/vgm-scrap-radio#readme"
+  "homepage": "https://github.com/MarioAraya/vgm-scrap-radio#readme",
+  "devDependencies": {
+    "cypress": "^3.1.0"
+  }
 }

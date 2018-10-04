@@ -60,3 +60,8 @@ typings/
 # next.js build output
 .next
 TODO
+
+# Cypress
+cypress/screenshots
+cypress/videosFolder
+cypress/integration/examples
