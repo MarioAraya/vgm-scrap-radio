@@ -1,0 +1,234 @@
+#audio1 {
+	display: none;
+}
+.audioplayer
+{
+	height: 3.5em; /* 40 */
+	margin: 0px 10px;
+	width: 527px;
+	color: #fff;
+	text-shadow: 1px 1px 0 #000;
+	border: 1px solid #222;
+	position: relative;
+	z-index: 1;
+	background: #d7dee5;
+	background: -webkit-gradient( linear, left top, left bottom, from( #dfe7ef ), to( #c4ccd4 ) );
+	background: -webkit-linear-gradient( top, #dfe7ef, #c4ccd4 );
+	background: -moz-linear-gradient( top, #dfe7ef, #c4ccd4 );
+	background: -ms-radial-gradient( top, #dfe7ef, #c4ccd4 );
+	background: -o-linear-gradient( top, #dfe7ef, #c4ccd4 );
+	background: linear-gradient( top, #dfe7ef, #c4ccd4 );
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border: none;
+}
+
+.audioplayerPlayPause
+{
+	width: 2.5em; /* 40 */
+	height: 100%;
+	text-align: center;
+	cursor: pointer;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	border-right: 1px solid #999;
+	float:left;
+
+}
+
+.audioplayerPlayPause:hover,
+.audioplayerPlayPause:focus,
+.audioplayerVolume:hover,
+.audioplayerVolume:focus
+{
+	background-color: #d7dee5;
+}
+
+
+.audioplayerPlayPause span
+{
+	display: block;
+	padding-top: 7px;
+}
+
+.audioplayerTimeCurrent, .audioplayerTimeDuration
+{
+	width: 4.375em; /* 70 */
+	height: 100%;
+	line-height: 3.375em; /* 38 */
+	text-align: center;
+	z-index: 2;
+	top: 0;
+	float: left;
+}
+
+.audioplayerTimeDuration
+{
+	border-right: 1px solid #999;
+}
+
+.audioplayerBar
+{
+	height: 0.875em; /* 14 */
+	background-color: #444;
+	cursor: pointer;
+	z-index: 1;
+	top: 50px;
+	right: 6.875em; /* 110 */
+	left: 6.875em; /* 110 */
+	margin-top: 14px;
+	float:left;
+	width: 350px;
+	height: 11px;
+	border-radius:11px;
+}
+
+.audioplayerBar div
+{
+	width: 350px;
+	height: 11px;
+	border-radius:11px;
+	position: absolute;
+}
+
+.audioplayerBarLoaded
+{
+	width: 1%;
+	background-color: #222;
+	z-index: 1;
+}
+
+.audioplayerBarPlayed
+{
+	width: 1%;
+	background: #80adca;
+	background: -webkit-gradient( linear, left top, right top, from( #80adca ), to( #637e8f ) );
+	background: -webkit-linear-gradient( left, #80adca, #637e8f );
+	background: -moz-linear-gradient( left, #80adca, #637e8f );
+	background: -ms-radial-gradient( left, #80adca, #637e8f );
+	background: -o-linear-gradient( left, #80adca, #637e8f );
+	background: linear-gradient( left, #80adca, #637e8f );
+	z-index: 2;
+}
+
+#audioplayerButtons { height:48px; position:relative; text-align:center; vertical-align: middle; text-decoration:none; padding-bottom: 10px;}
+#audioplayerButtons a[id^="btn"] { color:#637e8f; cursor:pointer; font-size:35px; margin:0; padding:0 20px 6px; text-decoration:none; }
+#audioplayerButtons a[id^="btn"]:last-child { margin-left:-4px; }
+#audioplayerButtons a[id^="btn"]:hover,a[id^="btn"]:active { background-color:#DDD; color: #84a6bc; text-decoration: none; }
+#audioplayerButtons a[id^="btn"]::-moz-focus-inner { border:0; padding:0; }
+#audioplayerAction {display: none;}
+#audioplayerCurrentSong { display:none; }
+
+.audioplayerVolume
+{
+	width: 38px;
+	height: 100%;
+	cursor: pointer;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	float:left;
+	padding-left: 12px;
+}
+
+.audioplayerVolume span
+{
+	display: block;
+	padding-top: 7px;
+}
+
+.audioplayerVolumeBar {
+    visibility: hidden;
+    width: 45px;
+    height: 20px;
+	background: #d7dee5;
+	background: -webkit-gradient( linear, left top, left bottom, from( #dfe7ef ), to( #c4ccd4 ) );
+	background: -webkit-linear-gradient( top, #dfe7ef, #c4ccd4 );
+	background: -moz-linear-gradient( top, #dfe7ef, #c4ccd4 );
+	background: -ms-radial-gradient( top, #dfe7ef, #c4ccd4 );
+	background: -o-linear-gradient( top, #dfe7ef, #c4ccd4 );
+	background: linear-gradient( top, #dfe7ef, #c4ccd4 );
+    border-radius: 2px;
+	border: 1px solid #222;
+	padding-top: 7px;
+	padding-left: 5px;
+
+    /* Position the tooltip */
+    position: absolute;
+    right:0px;
+    bottom:100%;
+    z-index: 1;
+}
+
+.audioplayerVolume:hover ~ .audioplayerVolumeBar, .audioplayerVolumeBar:hover {
+    visibility: visible;
+
+}
+
+.audioplayerVolumeBar div
+{
+	width: 39px;
+	height: 11px;
+	border-radius:11px;
+	position: absolute;
+	background-color: #444;
+	z-index:2;
+}
+
+.audioplayerVolumeBarLevel {
+	height: 0;
+	width: 0;
+	background: #80adca;
+	background: -webkit-gradient( linear, left top, right top, from( #80adca ), to( #637e8f ) );
+	background: -webkit-linear-gradient( left, #80adca, #637e8f );
+	background: -moz-linear-gradient( left, #80adca, #637e8f );
+	background: -ms-radial-gradient( left, #80adca, #637e8f );
+	background: -o-linear-gradient( left, #80adca, #637e8f );
+	background: linear-gradient( left, #80adca, #637e8f );
+	z-index: 3;
+}
+
+.loadingSpinner {
+	height: 30px;
+	width: 30px;
+}
+
+
+/* App styles */
+body {
+	max-width: 600px;
+	border: 1px solid #ddd;
+	/* padding: 10px; */
+	height: auto;
+}
+.black {
+	background: #000;
+}
+md-list-item {
+    height: 30px;
+}
+md-list-item, md-list-item .md-list-item-inner {
+    min-height: 32px;
+}
+/* .md-ripple-container {
+	height: 30px !important;
+} */
+.md-toolbar-tools {
+	height: 38px !important;
+}
+.player {
+	height: 23px;
+    margin: 10px;
+}
+.smaller {
+	font-size: smaller;
+}
+.playlist__title {
+	min-width: 400px;
+    max-width: 400px;
+}
+.playlist__duration {
+    text-align: right;
+}

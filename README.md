@@ -11,8 +11,9 @@ The front-ent listener (the actual app) will be a python or a simple html5 <audi
 ### Features:
 1.  Scrapp a site with vgm music and get albums and tracks.
 2.  Play each song or album in an HTML5 player
-3.  Can randomly play 1 album or 1 song
-4.  Find and filter albums/tracks in the whole VGM database
+3.  Uses Chrome's [MediaSession API][5] to control player on smarthphone notifications.
+4.  Can randomly play 1 album or 1 song
+5.  Find and filter albums/tracks in the whole VGM database
 6.  Fire database with scrapped data (scrapping just executed once)
 
 ### Optional future features:
@@ -32,3 +33,4 @@ Im very oppened to hear opinions and accept any colaboration or help.
 [2]: http://khinsider.com
 [3]: https://downloads.khinsider.com/game-soundtracks/album/max-payne-pc-rip/02%2520max%2520payne%2520theme.mp3
 [4]: http://66.90.93.122/soundfiles/sega-saturn-ssf/street-fighter-alpha-warriors-dreams/T-1206G_15.mp3
+[5]: https://googlechrome.github.io/samples/media-session/audio.html
