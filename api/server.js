@@ -64,9 +64,12 @@ app.get('/api/albums', function (req, res) {
         res.json({ result })
     })
 })
-// POST albums
+// POST albums, update or insert if not exist
 app.post('/api/albums', (req, res) => {
-    db.collection('albums').save(req.body, (err, result) => {
+    var query = { "album.url": req.body.album.url };
+    var updateQuery = { $set : req.body}
+    db.collection('albums').updateOne(query, updateQuery, { upsert: true },
+    (err, result) => {
       if (err) return console.log(err)
   
       console.log('Album saved to database', result)
