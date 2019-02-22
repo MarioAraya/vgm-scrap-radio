@@ -3,16 +3,18 @@
 context('Scrapping album songs', () => {
     var baseUrl = "https://downloads.khinsider.com";
     var apiSaveAlbumUrl = "http://localhost:8080/api/albums"
-    var albumUrl = "/game-soundtracks/album/shenmue-original-soundtrack";
+    var albumUrl = ""; // /game-soundtracks/album/dracula-battle-perfect-selection";
     var album = {}
     // dracula-battle-perfect-selection
     // shenmue-original-soundtrack
     // super-mario-rpg-original-soundtrack
-    
+
     it('1) Must get src from MP3 audio files', () => {
+        albumUrl = Cypress.env('ALBUM_URL')
         let album_name, totalTime, totalSize, album_cover, 
             album_tracks = [], urlSongList = [];
         var songActualUrlList = [];
+        var albumArtImgs = [];
         var rowsTotalSongs = 0;
 
         cy.visit(baseUrl + albumUrl)
@@ -24,10 +26,12 @@ context('Scrapping album songs', () => {
         .get("#EchoTopic p:contains('Album name:') b:first").then( $el => {
             album_name = $el.text();
         })
-        // .get("#EchoTopic a[target='_blank']").each( (i, el) => {
-        //     cy.wrap($el).should('have.attr', 'href').then( imgSrc => { 
-        //         console.log(imgSrc)
-        //         album_cover = imgSrc;
+        // TODO: Mejora, hacer que pueda obtener o no las imagenes del cover
+        // .get("#EchoTopic a[target='_blank']").then( $albumArt => {
+        //     $albumArt.each( (i, anchor) => { 
+        //         cy.wrap(anchor).then(a => {
+        //             albumArtImgs.push(a.attr("href"));
+        //         })                
         //     })
         // })
 
@@ -72,7 +76,7 @@ context('Scrapping album songs', () => {
                 title: album_name,
                 totalTime: totalTime,
                 totalSize: totalSize,
-                coverImg: album_cover,
+                coverImgs: albumArtImgs,
                 songs: album_tracks
             }
         }).then( fullAlbum => {                
@@ -82,9 +86,9 @@ context('Scrapping album songs', () => {
         })
     })
     it('2) Save album and songs to API', () => {
+        if (!album.songs) return;
         cy  .request('POST', apiSaveAlbumUrl, { album })
             .then((response) => {
-                debugger
                 expect(response.status).to.eq(200)
             })
     })
