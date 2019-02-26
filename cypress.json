@@ -1,3 +1,4 @@
 {
-    "env": { "ALBUM_URL": "/game-soundtracks/album/contra-iii-the-alien-wars-snes" }
+    "env": { "ALBUM_URL": "/game-soundtracks/album/contra-iii-the-alien-wars-snes" },
+    "video": false
 }

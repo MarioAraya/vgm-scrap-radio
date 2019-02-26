@@ -19,10 +19,15 @@ MongoClient.connect(mongoUri, (err, client) => {
 app.use(bodyParser());
 app.use(cors());
 app.use('/public', express.static(__dirname + '/../client'))
+app.use('/player', express.static(__dirname + '/../client/player'))
 
 
 app.get('/', (req, res) => {
     res.sendFile(path.resolve('client/vgmlistener.html'));
+})
+
+app.get('/player', (req, res) => {
+    res.sendFile(path.resolve('client/player/index.html'));
 })
 
 // GET Consoles json
@@ -57,6 +62,34 @@ app.get('/api/albums:album', function (req, res) {
         res.json({ result })
     })
 })
+
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+// GET album from DB or Scrapp it and save to DB
+app.get('/api/album', function (req, res) {
+    let query = { 'album.url': req.query.album }
+    db.collection('albums').find(query).toArray(async (err, result) => {
+        if (err) return console.log(err)
+
+        if (result[0])
+            res.json({ result })
+        else {
+            let specFile = 'cypress/integration/scrapping-scripts/getsongs-cy.js'
+            let processStr = `npx cypress run --env ALBUM_URL="/game-soundtracks/album/${req.query.album}" --spec "${specFile}"`;
+            await require('child_process').exec(processStr, function (error, stdout, stderr) {
+                if (!error) {
+                    console.log(process.stdout);
+                    db.collection('albums').find(query).toArray((err, result) => {
+                        if (err) return console.log(err)
+                        res.json({ result })
+                    })
+                }
+            });        
+        }
+    })
+})
+
 // GET all albums
 app.get('/api/albums', function (req, res) {
     db.collection('albums').find().toArray((err, result) => {
@@ -64,6 +97,7 @@ app.get('/api/albums', function (req, res) {
         res.json({ result })
     })
 })
+
 // POST albums, update or insert if not exist
 app.post('/api/albums', (req, res) => {
     var query = { "album.url": req.body.album.url };
@@ -76,3 +110,31 @@ app.post('/api/albums', (req, res) => {
       res.json({ result })
     })
 })
+
+// TODO: add users login to implement FAVORITES/STARRED songs
+
+// ADD SONG TO FAVORITES
+app.post('/api/add-starred', (req, res) => {
+    // 1. Get current favorites
+    // 2. Insert new favorite song
+    // OR if not exist,
+    // 3. Create favorites new entry { uid.favorites }
+    debugger
+    var query = { "album.url": req.body.song };
+    var updateQuery = { $set : req.body}
+    db.collection('favorites').updateOne(query, updateQuery, { upsert: true },
+    (err, result) => {
+      if (err) return console.log(err)
+  
+      console.log('Album saved to database', result)
+      res.json({ result })
+    })
+})
+
+// // GET ALL FAVORITE SONGS
+// app.get('/api/get-starred-songs', function (req, res) {
+//     db.collection('favorites').find().toArray((err, result) => {
+//         if (err) return console.log(err)
+//         res.json({ result })
+//     })
+// })
