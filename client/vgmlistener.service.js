@@ -1,27 +1,47 @@
 var app = angular.module('BlankApp', ['ngMaterial', 'ngMessages'])
 
 app.factory('VgmListenerFactory', ['$http', function($http) {
-    let jsonDummy = {"album_name":"Akumajo Dracula Best I Perfect Selection","totalTime":"1h 4m","totalSize":"88 MB","album_tracks":[{"cd":0,"track_nro":"1.","title":"beginning - the legend of demon castle​dracula music.mp","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/ntevrblh/01%20-%20beginning%20-%20the%20legend%20of%20demon%20castle%20dracula%20music.mp.mp3","track_duration":"3:22","track_filesize":"4.93 MB"},{"cd":0,"track_nro":"2.","title":"bloody tears - dracula ii music","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/ohqpbkiy/02%20-%20bloody%20tears%20-%20dracula%20ii%20music.mp3","track_duration":"1:19","track_filesize":"1.79 MB"},{"cd":0,"track_nro":"3.","title":"prelude - epitaph - prayer - beginning -​boss fight - b","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/nougamtt/03%20-%20prelude%20-%20epitaph%20-%20prayer%20-%20beginning%20-%20boss%20fight%20-%20b.mp3","track_duration":"6:01","track_filesize":"8.71 MB"},{"cd":0,"track_nro":"4.","title":"destiny - clockwork - mad forest -​anxiety","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/hpdhhnvi/04%20-%20destiny%20-%20clockwork%20-%20mad%20forest%20-%20anxiety.mp3","track_duration":"6:22","track_filesize":"9.63 MB"},{"cd":0,"track_nro":"5.","title":"rising - stream - game over","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/hxeozvti/05%20-%20rising%20-%20stream%20-%20game%20over.mp3","track_duration":"3:36","track_filesize":"5.42 MB"},{"cd":0,"track_nro":"6.","title":"dead beat - nightmare - encounter","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/iuhepqhx/06%20-%20dead%20beat%20-%20nightmare%20-%20encounter.mp3","track_duration":"4:17","track_filesize":"6.27 MB"},{"cd":0,"track_nro":"7.","title":"aquarius - pressure","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/jehxzdie/07%20-%20aquarius%20-%20pressure.mp3","track_duration":"2:31","track_filesize":"3.63 MB"},{"cd":0,"track_nro":"8.","title":"demon seed - dejavu - vampire killer -​riddle - overtur","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/kiuoffsg/08%20-%20demon%20seed%20-%20dejavu%20-%20vampire%20killer%20-%20riddle%20-%20overtur.mp3","track_duration":"7:52","track_filesize":"11.58 MB"},{"cd":0,"track_nro":"9.","title":"evergreen - flash back","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/qrnchgjj/09%20-%20evergreen%20-%20flash%20back.mp3","track_duration":"2:30","track_filesize":"3.41 MB"},{"cd":0,"track_nro":"10.","title":"message of darkness","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/izhltzhq/10%20-%20message%20of%20darkness.mp3","track_duration":"0:43","track_filesize":"0.95 MB"},{"cd":0,"track_nro":"11.","title":"within these castle walls","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/ptiaqgti/11%20-%20within%20these%20castle%20walls.mp3","track_duration":"0:45","track_filesize":"0.92 MB"},{"cd":0,"track_nro":"12.","title":"bloody tears","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/cduprwan/12%20-%20bloody%20tears.mp3","track_duration":"1:05","track_filesize":"1.51 MB"},{"cd":0,"track_nro":"13.","title":"the silence of the daylight","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/ttwiktkb/13%20-%20the%20silence%20of%20the%20daylight.mp3","track_duration":"0:59","track_filesize":"1.34 MB"},{"cd":0,"track_nro":"14.","title":"dwelling of doom","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/tnpfopzf/14%20-%20dwelling%20of%20doom.mp3","track_duration":"0:59","track_filesize":"1.38 MB"},{"cd":0,"track_nro":"15.","title":"monster dance","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/ljruiwmx/15%20-%20monster%20dance.mp3","track_duration":"0:58","track_filesize":"1.33 MB"},{"cd":0,"track_nro":"16.","title":"last boss","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/chvmpqds/16%20-%20last%20boss.mp3","track_duration":"0:37","track_filesize":"0.83 MB"},{"cd":0,"track_nro":"17.","title":"game over","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/bckvnxso/17%20-%20game%20over.mp3","track_duration":"0:05","track_filesize":"0.11 MB"},{"cd":0,"track_nro":"18.","title":"a requiem","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/ldoshkxy/18%20-%20a%20requiem.mp3","track_duration":"2:00","track_filesize":"2.50 MB"},{"cd":0,"track_nro":"19.","title":"underground","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/kguwcakq/19%20-%20underground.mp3","track_duration":"0:30","track_filesize":"0.64 MB"},{"cd":0,"track_nro":"20.","title":"prologue","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/yfwyiaom/20%20-%20prologue.mp3","track_duration":"0:08","track_filesize":"0.16 MB"},{"cd":0,"track_nro":"21.","title":"vampire killer","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/myvdpjvj/21%20-%20vampire%20killer.mp3","track_duration":"1:15","track_filesize":"1.68 MB"},{"cd":0,"track_nro":"22.","title":"stalker","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/yakpqpmm/22%20-%20stalker.mp3","track_duration":"1:15","track_filesize":"1.59 MB"},{"cd":0,"track_nro":"23.","title":"wicked child","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/pbaixrae/23%20-%20wicked%20child.mp3","track_duration":"2:07","track_filesize":"2.68 MB"},{"cd":0,"track_nro":"24.","title":"walking on the edge","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/pkzwkguw/24%20-%20walking%20on%20the%20edge.mp3","track_duration":"1:43","track_filesize":"2.37 MB"},{"cd":0,"track_nro":"25.","title":"heart of fire","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/zahpfbah/25%20-%20heart%20of%20fire.mp3","track_duration":"2:13","track_filesize":"2.67 MB"},{"cd":0,"track_nro":"26.","title":"out of time","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/gwvtkzgp/26%20-%20out%20of%20time.mp3","track_duration":"1:21","track_filesize":"1.83 MB"},{"cd":0,"track_nro":"27.","title":"nothing to lose","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/cwmsjkpv/27%20-%20nothing%20to%20lose.mp3","track_duration":"1:33","track_filesize":"1.83 MB"},{"cd":0,"track_nro":"28.","title":"poison mind","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/edhfwqyb/28%20-%20poison%20mind.mp3","track_duration":"0:32","track_filesize":"0.58 MB"},{"cd":0,"track_nro":"29.","title":"black night","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/kfcfjkgg/29%20-%20black%20night.mp3","track_duration":"0:57","track_filesize":"1.13 MB"},{"cd":0,"track_nro":"30.","title":"voyager","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/mlabtiwq/30%20-%20voyager.mp3","track_duration":"0:56","track_filesize":"0.98 MB"},{"cd":0,"track_nro":"31.","title":"the silence of the daylight","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/kmgfoemz/31%20-%20the%20silence%20of%20the%20daylight.mp3","track_duration":"1:14","track_filesize":"1.43 MB"},{"cd":0,"track_nro":"32.","title":"bloody tears","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/hvmoerff/32%20-%20bloody%20tears.mp3","track_duration":"0:49","track_filesize":"0.89 MB"},{"cd":0,"track_nro":"33.","title":"a requiem","track_href":"http://66.90.93.122/ost/akumajo-dracula-best-i-perfect-selection/yjhvmlag/33%20-%20a%20requiem.mp3","track_duration":"1:37","track_filesize":"1.63 MB"}]}
     let urlGetConsoles = 'http://localhost:8080/api/consoles';
-
+    let urlGetAlbums = 'http://localhost:8080/api/albums'; 
+    let urlGetAlbum = 'http://localhost:8080/api/album'; 
+    let urlAddFavorites = 'http://localhost:8080/api/add-starred'
+    let urlGetFavoriteSongs = 'http://localhost:8080/api/get-starred-songs'
+    
     return {
         getConsoles: getConsoles,
-        getSongs:getSongs,
-        getAlbumsByConsole: getAlbumsByConsole
+        getAlbumsByConsole: getAlbumsByConsole,
+        getAllAlbums: getAllAlbums,
+        getAlbum: getAlbum,
+        saveSongToFavorites: saveSongToFavorites,
+        getFavoritesSongs: getFavoritesSongs
     }
 
     // Get consoles from API
     function getConsoles(){
         return $http.get(urlGetConsoles);
     }
+
+    // GET ALL ALBUMS
+    function getAllAlbums() {
+        return $http.get(urlGetAlbums)
+    }
     // GET albums by console from API
     function getAlbumsByConsole(console){
         return {};
     }
 
-    // Get album songs from API
-    function getSongs(album){
-        return {}
+    // Get album album from API
+    function getAlbum(album){
+        return $http.get(urlGetAlbum + '?album=' +album)
     }
 
+    // song object: { song, album, uid }
+    function saveSongToFavorites(song) {
+        song.song.album = song.album.title;
+        return $http.post(urlAddFavorites, song)
+    }
+
+    function getFavoritesSongs() {
+        return $http.get(urlGetFavoriteSongs)
+    }
 }]);
