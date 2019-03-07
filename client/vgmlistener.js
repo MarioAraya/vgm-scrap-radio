@@ -1,13 +1,13 @@
-app.controller('MainCtrl', ['VgmListenerFactory', '$scope', '$sce', '$mdSidenav',
-  function(VgmListenerFactory, $scope, $sce, $mdSidenav) {
+app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
+  function(VgmListenerFactory, $scope,) {
 
   let currentSong = null;
   let subtitle = document.getElementById('subtitle');
   let list = document.getElementById('list');
   let track = document.getElementById('track');
-  $scope.trustSrc = function(src) {
-    return $sce.trustAsResourceUrl(src);
-  }
+  $scope.data = {}
+  $scope.data.mode = "Menu" // Muestra menu en overlay hamburger menu
+
   $scope.playSong = function(track) {
     if (currentSong) {
       currentSong.stop()
@@ -34,17 +34,15 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope', '$sce', '$mdSidenav'
     subtitle.onclick = function(ev) {
       player.togglePlaylist();
     }
-    $scope.data = {}
-    $scope.data.mode = "Menu" // Muestra menu en overlay hamburger menu
   }
 
   // SideNav
-  $scope.toggleSidebar = buildToggler('left');
-  function buildToggler(componentId) {
-    return function() {
-      $mdSidenav(componentId).toggle();
-    };
-  }
+  // $scope.toggleSidebar = buildToggler('left');
+  // function buildToggler(componentId) {
+  //   return function() {
+  //   (componentId).toggle();
+  //   };
+  // }
 
   getScrappedAlbums = function() {
     VgmListenerFactory.getAllAlbums().then( function(result) {
@@ -54,21 +52,53 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope', '$sce', '$mdSidenav'
     })
   }
 
-  $scope.albumSelected = function(albumItem) {
-    // $scope.toggleSidebar();
-    player.togglePlaylist();
-    $scope.album = albumItem.album;
-    songs = albumItem.album.songs.map(function(song){
-      return {
-        title: song.title,
-        src: song.track_href,
-        howl: null
-      }
+  $scope.albumSelected = function(albumItems) {
+    toggleMainMenu();
+    albumUrl = albumItems.url.substring(albumItems.url.lastIndexOf('/') + 1);
+    VgmListenerFactory.getAlbum(albumUrl).then(function(result){
+      if (!result && !result.data.result[0]) return;
+      $scope.album = result.data.result[0].album;
+      
+      var htmlSubtitle = `${$scope.album.title} <span>(${ $scope.album.totalTime } 
+                          - ${ $scope.album.totalSize })</span>`;
+      subtitle.innerHTML = htmlSubtitle;
+      list.innerHTML = '';
+      
+      songs = $scope.album.songs.map(function(song){
+        return {
+          title: song.title,
+          src: song.track_href,
+          howl: null
+        }
+      })
+      
+      // TODO: aca limpiar el player para que no quede cacheado y sonando
+      player = new Player(songs);
+      player.togglePlaylist();
     })
-    var html = `${albumItem.album.title} <span>(${ albumItem.album.totalTime } - ${ albumItem.album.totalSize })</span>`
-    subtitle.innerHTML = html;
-    list.innerHTML = '';
-    player = new Player(songs);
+  }
+
+  $scope.consoleSelected = function(consoleItem) {
+    VgmListenerFactory.getAlbumsByConsole(consoleItem.name).then(
+      result => {
+
+        if (result) {
+          $scope.data.mode = 'ConsoleAlbums';
+          $scope.consoleAlbums = consoleItem.albums.map(function(album){
+            return {
+              name: album.name,
+              url: album.url,
+              howl: null
+            }
+          })
+          // list.innerHTML = '';
+          subtitle.innerHTML = consoleItem.name;
+        }
+      }
+    )
+
+    // var html = `${consoleItem.name} <span>(${ consoleItem. })</span>`
+    // TODO: aca limpiar el player para que no quede cacheado y sonando
   }
 
   document.onkeydown = function(evt) {
@@ -91,6 +121,10 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope', '$sce', '$mdSidenav'
       if(!result) return;
       // Song added to favorites
     })
+  }
+
+  toggleMainMenu = function() {
+    document.querySelectorAll(".checkbox-toggle")[0].click();
   }
 
   // $scope.getFavoritesSongs = function() {

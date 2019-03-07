@@ -13,6 +13,7 @@ var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nex
 elms.forEach(function(elm) {
   window[elm] = document.getElementById(elm);
 });
+window['menuItem'] = document.querySelectorAll(".menu ul li a");
 
 /**
  * Player class containing the state of our playlist and where we are in it.
@@ -22,7 +23,7 @@ elms.forEach(function(elm) {
 var Player = function(playlist) {
   this.playlist = playlist;
   this.index = 0;
-
+  
   // Display the title of the first track.
   track.innerHTML = playlist[0].title;
 
@@ -30,8 +31,12 @@ var Player = function(playlist) {
   playlist.forEach(function(song) {
     var div = document.createElement('div');
     div.className = 'list-song';
-    div.innerHTML = song.title;
-    div.onclick = function() {
+    div.innerHTML = song.title + "<button class='btnfa'><i class='fa fa-star fa-2x'></i></button>";
+    div.onclick = function(ev) {
+      if (ev.path[0].classList.contains('fa-star') || 
+          ev.path[0].classList.contains('playing')) 
+            return;
+        
       player.skipTo(playlist.indexOf(song));
     };
     list.appendChild(div);
@@ -68,12 +73,16 @@ Player.prototype = {
           wave.container.style.display = 'block';
           bar.style.display = 'none';
           pauseBtn.style.display = 'block';
+          
+          // Add style current playing song
+          self.colorCurrentTrack(self.index)
         },
         onload: function() {
           // Start the wave animation.
           wave.container.style.display = 'block';
           bar.style.display = 'none';
           loading.style.display = 'none';
+          console.log('onload')
         },
         onend: function() {
           // Stop the wave animation.
@@ -90,10 +99,12 @@ Player.prototype = {
           // Stop the wave animation.
           wave.container.style.display = 'none';
           bar.style.display = 'block';
+          console.log('onstop')
         },
         onseek: function() {
           // Start upating the progress of the track.
           requestAnimationFrame(self.step.bind(self));
+          console.log('onseek')
         }
       });
     }
@@ -266,6 +277,19 @@ Player.prototype = {
     var seconds = (secs - minutes * 60) || 0;
 
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  },
+
+  /**
+   * Set color current playing track
+   */
+  colorCurrentTrack: function(index) {
+    var current = document.querySelector("#playlist .list-song.playing");
+    if (current) current.classList.remove("playing");
+
+    var currentItem = "#playlist .list-song:nth-child(" +parseInt(index + 1) +")";
+    var current = document.querySelectorAll(currentItem)
+    if (current[0] && current[0].classList);
+    current[0].classList.add("playing");
   }
 };
 
@@ -277,6 +301,14 @@ var player = new Player([
     howl: null
   }
 ]);
+var menuTick = new Howl({
+    src: '/player/press.mp3'
+});
+menuItem.forEach(function(el) {
+  el.addEventListener('mouseover', function() {
+    menuTick.play();
+  });
+});
 
 // Bind our player controls.
 playBtn.addEventListener('click', function() {
@@ -297,8 +329,13 @@ waveform.addEventListener('click', function(event) {
 playlistBtn.addEventListener('click', function() {
   player.togglePlaylist();
 });
-playlist.addEventListener('click', function() {
-  player.togglePlaylist();
+playlist.addEventListener('click', function(ev) {
+  if (ev.path[0].classList.contains('fa-star')) {
+    ev.path[0].classList.toggle('starred');
+  }
+  if(ev.path[0].classList.contains('playing')){
+    player.togglePlaylist();
+  }
 });
 volumeBtn.addEventListener('click', function() {
   player.toggleVolume();

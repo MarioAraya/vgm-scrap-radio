@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="BlankApp">
+<html lang="en" ng-app="VgmListener">
 
 <head>
     <link href="/public/favicon.ico" rel="icon" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css"> -->
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css">
   <link rel='stylesheet prefetch' href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.css'>
-  <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.3/docs.css'>
+  <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.3/docs.css'> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link href="public/vgmlistener.css" rel="stylesheet">
   <link href="public/player/styles.css" rel="stylesheet">
@@ -29,7 +30,7 @@
       <div>
         <div >
           <ul ng-show="data.mode=='Menu'">
-              <li><a href="#" ng-click="data.mode='Albums'">Albums already scrapped</a></li>
+            <li><a href="#" ng-click="data.mode='Albums'">Albums already scrapped</a></li>
             <li><a href="#" ng-click="data.mode='Consoles'">List all Consoles</a></li>
             <li><a href="#" ng-click="data.mode='AllAlbums'">List all Albums of all Consoles</a></li>
             <li><a href="#" ng-click="menuAlbumClick">Contact</a></li>
@@ -39,13 +40,20 @@
           <ul ng-show="data.mode=='Consoles'">
             <li><b>CONSOLES</b></li>
             <li><a href="#" ng-click="data.mode='Menu'"><< Back to menu</a></li>
-            <li ng-repeat="c in consoles" data-url="{{ c.url }}"> {{ c.name }} {{ c.size }} </li>
+            <li ng-repeat="c in consoles">
+                <a href="#" ng-click="consoleSelected(c)"> {{ c.name }} {{ c.size }} </a></li>
+          </ul>
+          <ul ng-show="data.mode=='ConsoleAlbums'">
+              <li><b>{{ ca.name }}</b></li>
+              <li><a href="#" ng-click="data.mode='Menu'"><< Back to menu</a></li>
+              <li ng-repeat="ca in consoleAlbums"> 
+                <a href="#" ng-click="albumSelected(ca)"> {{ ca.name }} </a></li>
           </ul>
           <ul ng-show="data.mode=='Albums'">
             <li><b>ALREADY SCRAPPED ALBUMS</b></li>
             <li><a href="#" ng-click="data.mode='Menu'"><< Back to menu</a></li>
             <li ng-repeat="a in albums">
-              <a href="#" ng-click="albumSelected(a)"> {{ a.album.title }} </a></li>
+              <a href="#" ng-click="albumSelected(a.album)"> {{ a.album.title }} </a></li>
           </ul>
         </div>
       </div>
@@ -93,32 +101,8 @@
       </div>
   </div>
 
-
-  <!-- <md-list-item class="playlist" ng-repeat="track in album.songs">
-    <md-icon ng-click="playSong(track)">play_arrow</md-icon>
-    <p ng-click="playSong(track)" class="playlist__title">{{ track.title }}</p>
-    
-    <md-button ng-click="saveSongToFavorites(track, album)">
-        <md-icon>star_border</md-icon>
-      </md-button>
-    <p class="playlist__duration">{{ track.track_duration }}</p>
-  </md-list-item>  -->
-  
-  <!-- <footer class="navbar navbar-inverse navbar-fixed-bottom">
-    <div class="container" style="text-align:center;">
-      <p class="navbar-text">&copy; 2019 - Shoreza labs</p>
-    </div>
-  </footer> -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!-- Angular Material requires Angular.js Libraries -->
+  <!-- Angularjs 1.5  +  Howlerjs  +  app  -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
-  <!-- Angular Material Library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
-  <script src="https://kamilkp.github.io/angular-sortable-view/src/angular-sortable-view.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.min.js"></script>
   <script src="/public/vgmlistener.service.js"></script>
   <script src="/public/vgmlistener.js"></script>

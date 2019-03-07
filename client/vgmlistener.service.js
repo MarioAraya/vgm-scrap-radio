@@ -1,4 +1,4 @@
-var app = angular.module('BlankApp', ['ngMaterial', 'ngMessages'])
+var app = angular.module('VgmListener', [])
 
 app.factory('VgmListenerFactory', ['$http', function($http) {
     let urlGetConsoles = 'http://localhost:8080/api/consoles';
@@ -6,6 +6,7 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
     let urlGetAlbum = 'http://localhost:8080/api/album'; 
     let urlAddFavorites = 'http://localhost:8080/api/add-starred'
     let urlGetFavoriteSongs = 'http://localhost:8080/api/get-starred-songs'
+    let urlGetAlbumsByConsole = 'http://localhost:8080/api/get-console-albums'
     
     return {
         getConsoles: getConsoles,
@@ -27,7 +28,7 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
     }
     // GET albums by console from API
     function getAlbumsByConsole(console){
-        return {};
+        return $http.get(urlGetAlbumsByConsole + '?console=' +console);
     }
 
     // Get album album from API
