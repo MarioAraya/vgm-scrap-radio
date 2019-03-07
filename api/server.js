@@ -2,11 +2,11 @@ const express = require('express')
 const app = express()
 const port = 8080
 const cors = require('cors')
+const compression = require('compression')
 const MongoClient = require('mongodb').MongoClient
 // const mongoUri = "mongodb://arayaromero:arayaromero1@ds057862.mlab.com:57862/mlab-vgm-db"
 const mongoUri = "mongodb://localhost";
 let db = undefined;
-const bodyParser = require('body-parser');
 var path = require('path');
 
 MongoClient.connect(mongoUri, (err, client) => {
@@ -16,8 +16,10 @@ MongoClient.connect(mongoUri, (err, client) => {
     app.listen(port, () => console.log(`VGM API Listening on port: ${port}!`))
 })
 
-app.use(bodyParser());
+app.use(express.json({limit: '10mb'}));
+app.use(express.urlencoded({limit: '10mb'}));
 app.use(cors());
+app.use(compression());
 app.use('/public', express.static(__dirname + '/../client'))
 app.use('/player', express.static(__dirname + '/../client/player'))
 
@@ -37,24 +39,29 @@ app.get('/api/consoles', function (req, res) {
         res.json({ result })
     })
 })
+// GET Consoles json
+app.get('/api/get-console-albums?:console', function (req, res) {
+    var query = { "name": req.query.console };
+    db.collection('consoles').find(query).toArray((err, result) => {
+        if (err) return console.log(err)
+        res.json({ result })
+    })
+})
 // POST Consoles
 app.post('/api/consoles', (req, res) => {
-    db.collection('consoles').insertMany(req.body.consoleList, (err, result) => {
-      if (err) return console.log(err)
-  
-      console.log('Consoles list saved to database', result)
-      res.json({ result })
-    })
+    var query = { "url": req.body.url };
+    var updateQuery = { $set : req.body}
+    db.collection('consoles').updateOne(query, updateQuery, { upsert: true }, 
+        // db.collection('consoles').insertMany(req.body.consoleList, (err, result) => {
+        (err, result) => {
+        if (err) return console.log(err)
+    
+        console.log('Consoles list saved to database', result)
+        res.json({ result })
+        })
 })
-// PUT Albums array for a specific console
-app.post('/api/consoles:album', (req, res) => {
-    db.collection('consoles').save(req.body, (err, result) => {
-      if (err) return console.log(err)
-  
-      console.log('Consoloes list saved to database', result)
-      res.json({ result })
-    })
-})
+
+
 // GET album by album-url
 app.get('/api/albums:album', function (req, res) {
     db.collection('albums').find({ 'album.url': req.params.title}).toArray((err, result) => {

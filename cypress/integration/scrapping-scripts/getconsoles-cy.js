@@ -5,7 +5,6 @@ context('Scrapping console list', () => {
     var apiSaveConsolesUrl = "http://localhost:8080/api/consoles"
     var sectionUrl = "/console-list";
     let consoleList = [];
-    let albumsList = [];
 
     it('1) GET consolesList', () => {
         cy.visit(baseUrl + sectionUrl)
@@ -19,18 +18,10 @@ context('Scrapping console list', () => {
         })
         
     })
-    it('2) SAVE (POST) consoles + albums/songs to API', () => {
-        if (consoleList && consoleList.length > 0)
-        cy  .request('POST', apiSaveConsolesUrl, { consoleList })
-            .then((response) => {
-                debugger
-                // response.body is automatically serialized into JSON
-                // expect(response.body).to.have.property('name', 'Jane') // true
-            })
-    })
-    it('3) GET albums/urls for each console', () => {
-        for (let i=0; i<3; ++i){
-        // for (let i=0; i<consoleList.length; i++){
+    it('2) GET albums/urls for each console & SAVE to DB', () => {
+        // for (let i=0; i<3; ++i){
+        for (let i=0; i<consoleList.length; i++){
+            let albumsList = [];
             cy.visit(consoleList[i].url)
             cy.get("#EchoTopic p a").each( ($el, i) => {
                 albumsList.push({
@@ -39,20 +30,16 @@ context('Scrapping console list', () => {
                 });
             }).then( () => {
                 Object.assign(consoleList[i].albums, albumsList);
+                return consoleList[i];
+            }).then( insertConsoleItem => {
+                // API Save to DB one by one
+                if (insertConsoleItem) {
+                    cy.request('POST', apiSaveConsolesUrl, insertConsoleItem )
+                    .then((response) => {
+                        expect(response.status).to.equals(200);
+                    })
+                }
             })
-            if(i==2) {
-                console.log('consoleList:', consoleList)
-                debugger
-            }
         }
-        xit('insert albums in consoles collection', () => {
-            if (consoleList && consoleList.length > 0)
-            cy  .request('POST', apiSaveConsolesUrl, { consoleList })
-                .then((response) => {
-                    debugger
-                    // response.body is automatically serialized into JSON
-                    // expect(response.body).to.have.property('name', 'Jane') // true
-                })
-        })
     })
 })
