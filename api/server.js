@@ -9,15 +9,15 @@ const mongoUri = "mongodb://localhost";
 let db = undefined;
 var path = require('path');
 
-MongoClient.connect(mongoUri, (err, client) => {
+MongoClient.connect(mongoUri, { useNewUrlParser: true }, (err, client) => {
     if (err) return console.log(err)
     db = client.db('mlab-vgm-db')
     // Start server
     app.listen(port, () => console.log(`VGM API Listening on port: ${port}!`))
 })
 
-app.use(express.json({limit: '10mb'}));
-app.use(express.urlencoded({limit: '10mb'}));
+app.use(express.json({limit: '10mb', extended: true}));
+app.use(express.urlencoded({limit: '10mb', extended: true }));
 app.use(cors());
 app.use(compression());
 app.use('/public', express.static(__dirname + '/../client'))

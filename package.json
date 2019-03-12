@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/MarioAraya/vgm-scrap-radio#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "cors": "^2.8.5",
     "cypress": "^3.1.4",
