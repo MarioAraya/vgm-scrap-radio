@@ -286,8 +286,7 @@ background: #b30000;
     float: right;
     right: 30px;
     font-size: 17px;
-    background-color: rgba(150, 105, 218, 0.35);
-    border-radius: 30px;
+    background-color: transparent;
 }
 .starred {
 	color:#cfec2d;

@@ -154,6 +154,15 @@ html {
     right: 3%;
     margin: -17.5px auto;
   }
+  #starredBtn {
+    width: 35px;
+    height: 35px;
+    top: 36%;
+    right: 11.5%;
+    margin: -17.5px auto;
+    color: white;
+    font-size: 19px;
+  }
   
   /* Progress */
   #waveform {

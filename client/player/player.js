@@ -28,12 +28,13 @@ var Player = function(playlist) {
   track.innerHTML = playlist[0].title;
 
   // Setup the playlist display.
-  playlist.forEach(function(song) {
+  playlist.forEach(function(song, i, array) {
     var div = document.createElement('div');
     div.className = 'list-song';
-    div.innerHTML = song.title + "<button class='btnfa'><i class='fa fa-star fa-2x'></i></button>";
-    div.onclick = function(ev) {
-      if (ev.path[0].classList.contains('fa-star') || 
+    div.setAttribute('pos', i);
+    div.innerHTML = song.title + "<button class='btnfa'><i class='fa fa-star-o fa-2x'></i></button>";
+    div.onclick = function(ev, i) {
+      if (ev.path[0].classList.contains('fa') ||
           ev.path[0].classList.contains('playing')) 
             return;
         
@@ -329,9 +330,13 @@ waveform.addEventListener('click', function(event) {
 playlistBtn.addEventListener('click', function() {
   player.togglePlaylist();
 });
-playlist.addEventListener('click', function(ev) {
-  if (ev.path[0].classList.contains('fa-star')) {
-    ev.path[0].classList.toggle('starred');
+playlist.addEventListener('click', function(ev, i) {
+  if (ev.path[0].classList.contains('fa')) {
+    var scope = angular.element(document.querySelector(".fa")).scope();
+    var track_nrm = ev.path[0].parentElement.parentElement.getAttribute('pos');
+    scope.$apply(function(){        
+        scope.toggleFavorite(track_nrm)
+    })
   }
   if(ev.path[0].classList.contains('playing')){
     player.togglePlaylist();
