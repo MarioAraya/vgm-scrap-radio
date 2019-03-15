@@ -47,6 +47,8 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
     VgmListenerFactory.getConsoles().then(function(res) {
       $scope.consoles = res.data.result;
     })
+    .catch(err => console.log('getConsoles error: ', err))
+
     getScrappedAlbums();
     list.innerHTML = '';
     track.onclick = function(ev) {
@@ -64,6 +66,7 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
       $scope.albums = result.data.result;
       $scope.album = result.data.result[1].album;
     })
+    .catch(err => console.log('getScrappedAlbums error: ', err))
   }
 
   loadUserFavoriteTracks = function(albumTitle){
