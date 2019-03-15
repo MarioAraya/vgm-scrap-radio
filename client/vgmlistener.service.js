@@ -1,12 +1,12 @@
 var app = angular.module('VgmListener', [])
 
 app.factory('VgmListenerFactory', ['$http', function($http) {
-    let urlGetConsoles = 'http://localhost:8080/api/consoles';
-    let urlGetAlbums = 'http://localhost:8080/api/albums'; 
-    let urlGetAlbum = 'http://localhost:8080/api/album'; 
-    let urlAddFavorites = 'http://localhost:8080/api/add-starred'
-    let urlGetFavoriteSongs = 'http://localhost:8080/api/get-starred-songs'
-    let urlGetAlbumsByConsole = 'http://localhost:8080/api/get-console-albums'
+    let urlGetConsoles = '/api/consoles';
+    let urlGetAlbums = '/api/albums'; 
+    let urlGetAlbum = '/api/album'; 
+    let urlAddFavorites = '/api/add-starred'
+    let urlGetFavoriteSongs = '/api/get-starred-songs'
+    let urlGetAlbumsByConsole = '/api/get-console-albums'
     
     return {
         getConsoles: getConsoles,

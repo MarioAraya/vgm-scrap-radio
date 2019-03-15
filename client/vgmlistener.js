@@ -43,7 +43,7 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
   };
 
   // Carga console list
-  this.$onInit = function() {
+  onInit = function() {
     VgmListenerFactory.getConsoles().then(function(res) {
       $scope.consoles = res.data.result;
     })
@@ -70,9 +70,12 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
     if (albumTitle === $scope.album.title) {
       let userFavs = $scope.user.favorites.filter(e => e.album === albumTitle)[0].starred;
       userFavs.forEach(fav => {
-        debugger
-        fav
+        var index = player.playlist.findIndex( a => {
+          return fav.title === a.title
+        })
+        $scope.toggleFavorite(index)
       })
+      
     }
   }
 
@@ -150,6 +153,8 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
   }
 
   $scope.toggleFavorite = function(track_index){
+    if (track_index === undefined) track_index = player.index;
+
     let currentSong = player.playlist[track_index];
     if (!currentSong.src) return;
     
@@ -179,7 +184,7 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
     document.querySelectorAll(".checkbox-toggle")[0].click();
   }
 
-
+  onInit();  
   // $scope.getFavoritesSongs = function() {
   //   VgmListenerFactory.getFavoritesSongs().then( function(result) {
   //     if(!result) return;
