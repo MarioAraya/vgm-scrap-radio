@@ -128,6 +128,7 @@ Player.prototype = {
 
     // Keep track of the index we are currently playing.
     self.index = index;
+    updateMetadata(index);
   },
 
   /**
@@ -248,7 +249,7 @@ Player.prototype = {
   togglePlaylist: function() {
     var self = this;
     var display = (playlist.style.display === 'block') ? 'none' : 'block';
-
+    
     setTimeout(function() {
       playlist.style.display = display;
     }, (display === 'block') ? 0 : 500);
@@ -391,6 +392,76 @@ var wave = new SiriWave({
   frequency: 2
 });
 wave.start();
+
+/**
+ * Media Session Chrome API implementation
+ * https://googlechrome.github.io/samples/media-session/audio.html
+ */ 
+updateMetadata = function(index) {
+  let track = playlist[index];
+  if ('mediaSession' in navigator) {
+    // console.log('Playing ' + track.title + ' track...');
+    let currTitle = player.playlist[player.index].title;
+    let currAlbum = angular.element( document.querySelector('#subtitle') ).scope().album.title
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currTitle,
+      // artist: 'track.artist',
+      album: currAlbum,
+      artwork: 'default_album.jpg.'
+    });
+  }
+}
+/* Previous Track & Next Track */
+navigator.mediaSession.setActionHandler('previoustrack', function() {
+  console.log('> User clicked "Previous Track" icon.');
+  // index = (index - 1 + playlist.length) % playlist.length;
+  Player.skip('prev')
+});
+
+navigator.mediaSession.setActionHandler('nexttrack', function() {
+  console.log('> User clicked "Next Track" icon.');
+  // index = (index + 1) % playlist.length;
+  // playAudio();
+  debugger
+  Player.skip('next')
+});
+
+/* Seek Backward & Seek Forward */
+
+let skipTime = 10; /* Time to skip in seconds */
+
+navigator.mediaSession.setActionHandler('seekbackward', function() {
+  console.log('> User clicked "Seek Backward" icon.');
+  // audio.currentTime = Math.max(audio.currentTime - skipTime, 0);
+  Player.skip('prev')
+});
+
+navigator.mediaSession.setActionHandler('seekforward', function() {
+  console.log('> User clicked "Seek Forward" icon.');
+  // audio.currentTime = Math.min(audio.currentTime + skipTime, audio.duration);
+  Player.skip('next')
+});
+
+/* Play & Pause */
+
+navigator.mediaSession.setActionHandler('play', function() {
+  console.log('> User clicked "Play" icon.');
+  // audio.play();
+  Player.play();
+  // Do something more than just playing audio...
+});
+
+navigator.mediaSession.setActionHandler('pause', function() {
+  console.log('> User clicked "Pause" icon.');
+  // audio.pause();
+  Player.pause();
+  // Do something more than just pausing audio...
+});
+
+/**
+ * Fin Media Session
+ */
+
 
 // Update the height of the wave animation.
 // These are basically some hacks to get SiriWave.js to do what we want.
