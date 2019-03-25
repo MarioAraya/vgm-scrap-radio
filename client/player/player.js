@@ -128,7 +128,7 @@ Player.prototype = {
 
     // Keep track of the index we are currently playing.
     self.index = index;
-    updateMetadata(index);
+    updateMetadata();
   },
 
   /**
@@ -397,70 +397,34 @@ wave.start();
  * Media Session Chrome API implementation
  * https://googlechrome.github.io/samples/media-session/audio.html
  */ 
-updateMetadata = function(index) {
-  let track = playlist[index];
+updateMetadata = function() {
+  let currTitle = player.playlist[player.index].title;
+  let currAlbum = angular.element( document.querySelector('#subtitle') ).scope().album.title
+
   if ('mediaSession' in navigator) {
-    // console.log('Playing ' + track.title + ' track...');
-    let currTitle = player.playlist[player.index].title;
-    let currAlbum = angular.element( document.querySelector('#subtitle') ).scope().album.title
+
     navigator.mediaSession.metadata = new MediaMetadata({
       title: currTitle,
-      // artist: 'track.artist',
+      artist: '',
       album: currAlbum,
-      artwork: 'default_album.jpg.'
+      artwork: [
+        { src: 'https://dummyimage.com/96x96',   sizes: '96x96',   type: 'image/png' },
+        { src: 'https://dummyimage.com/128x128', sizes: '128x128', type: 'image/png' },
+        { src: 'https://dummyimage.com/192x192', sizes: '192x192', type: 'image/png' },
+        { src: 'https://dummyimage.com/256x256', sizes: '256x256', type: 'image/png' },
+        { src: 'https://dummyimage.com/384x384', sizes: '384x384', type: 'image/png' },
+        { src: 'https://dummyimage.com/512x512', sizes: '512x512', type: 'image/png' },
+      ]
     });
+  
+    navigator.mediaSession.setActionHandler('play', function() { player.play() });
+    navigator.mediaSession.setActionHandler('pause', function() { player.pause() });
+    navigator.mediaSession.setActionHandler('seekbackward', function() {});
+    navigator.mediaSession.setActionHandler('seekforward', function() {});
+    navigator.mediaSession.setActionHandler('previoustrack', function() { player.skip('prev') });
+    navigator.mediaSession.setActionHandler('nexttrack', function() { player.skip('next') });
   }
 }
-/* Previous Track & Next Track */
-navigator.mediaSession.setActionHandler('previoustrack', function() {
-  console.log('> User clicked "Previous Track" icon.');
-  // index = (index - 1 + playlist.length) % playlist.length;
-  Player.skip('prev')
-});
-
-navigator.mediaSession.setActionHandler('nexttrack', function() {
-  console.log('> User clicked "Next Track" icon.');
-  // index = (index + 1) % playlist.length;
-  // playAudio();
-  debugger
-  Player.skip('next')
-});
-
-/* Seek Backward & Seek Forward */
-
-let skipTime = 10; /* Time to skip in seconds */
-
-navigator.mediaSession.setActionHandler('seekbackward', function() {
-  console.log('> User clicked "Seek Backward" icon.');
-  // audio.currentTime = Math.max(audio.currentTime - skipTime, 0);
-  Player.skip('prev')
-});
-
-navigator.mediaSession.setActionHandler('seekforward', function() {
-  console.log('> User clicked "Seek Forward" icon.');
-  // audio.currentTime = Math.min(audio.currentTime + skipTime, audio.duration);
-  Player.skip('next')
-});
-
-/* Play & Pause */
-
-navigator.mediaSession.setActionHandler('play', function() {
-  console.log('> User clicked "Play" icon.');
-  // audio.play();
-  Player.play();
-  // Do something more than just playing audio...
-});
-
-navigator.mediaSession.setActionHandler('pause', function() {
-  console.log('> User clicked "Pause" icon.');
-  // audio.pause();
-  Player.pause();
-  // Do something more than just pausing audio...
-});
-
-/**
- * Fin Media Session
- */
 
 
 // Update the height of the wave animation.
