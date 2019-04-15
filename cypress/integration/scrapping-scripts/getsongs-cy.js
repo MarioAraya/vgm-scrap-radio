@@ -26,31 +26,31 @@ context('Scrapping album songs', () => {
         .get("#EchoTopic p:contains('Album name:') b:first").then( $el => {
             album_name = $el.text();
         })
-        // TODO: Mejora, hacer que pueda obtener o no las imagenes del cover
-        // .get("#EchoTopic a[target='_blank']").then( $albumArt => {
-        //     $albumArt.each( (i, anchor) => { 
-        //         cy.wrap(anchor).then(a => {
-        //             albumArtImgs.push(a.attr("href"));
-        //         })                
-        //     })
-        // })
+
+        // Executes javascript on 'window' dom object
+        cy.window().then((win) => {
+            // 1) cancel downloading request of the actual mp3 file
+            let audioEl = win.document.getElementById('audio1'); 
+            win.document.querySelectorAll(".playTrack").forEach(el => {
+                el.addEventListener("click", function(ev){
+                    let srcActual = audioEl.getAttribute('src');
+                    songActualUrlList.push(srcActual);
+                    audioEl.setAttribute('src', '');
+                    ev.preventDefault();
+                    return false;
+                });
+            }) 
+            // 2) Get the album_cover if is present
+            album_cover = win.document.querySelectorAll("#EchoTopic a[target='_blank'] img")[0]
+            if (album_cover) {
+                album_cover = album_cover.getAttribute('src');
+                albumArtImgs.push(album_cover);
+            }
+        })
 
         // Scrapps album tracks real url of the .MP3 by clicking the #tr
-        .get('.audioplayerPlayPause').then( $btnPlayMain => {
-            cy.get("#songlist tbody tr:not(#songlist_header,#songlist_footer)").then( $songRow => {
-                rowsTotalSongs = $songRow.length; 
-                $btnPlayMain.click()
-                for(var i=0; i<rowsTotalSongs; i++){
-                    cy.get('audio')
-                        .should('have.attr', 'src')
-                        .then((src) => {
-                            songActualUrlList.push(src);
-                        })
-                        .get('#btnNext').then( $btnNext => {
-                            $btnNext.click()
-                        })
-                }
-            })
+        .get('.playTrack').then( $playTrackBtn => {
+            $playTrackBtn.click();
         })
         .get("#songlist tbody tr:not(#songlist_header,#songlist_footer)").each(($tr, index) => {
             cy.wrap($tr).find("td").then(td => {
