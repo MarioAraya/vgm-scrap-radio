@@ -92,7 +92,10 @@ app.get('/api/album', function (req, res) {
             res.json({ result })
         else {
             let specFile = 'cypress/integration/scrapping-scripts/getsongs-cy.js'
-            let processStr = `npx cypress run --env ALBUM_URL="/game-soundtracks/album/${req.query.album}" --spec "${specFile}"`;
+            let processStr = `npx cypress run 
+                            --env ALBUM_URL="/game-soundtracks/album/${req.query.album}" 
+                            --spec "${specFile}" `;
+                            //--no-exit
             await require('child_process').exec(processStr, function (error, stdout, stderr) {
                 if (!error) {
                     console.log(process.stdout);
