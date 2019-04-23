@@ -4,9 +4,10 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
     let urlGetConsoles = '/api/consoles';
     let urlGetAlbums = '/api/albums'; 
     let urlGetAlbum = '/api/album'; 
-    let urlToggleFavoriteSong = '/api/toggle-starred-song'
-    let urlGetFavoriteSongs = '/api/get-starred-songs'
+    let urlToggleFavoriteSong = '/api/toggle-favorite-song'
+    let urlGetFavoriteSongs = '/api/get-favorite-songs'
     let urlGetAlbumsByConsole = '/api/get-console-albums'
+    let urlGetUserData = '/api/get-userdata'
     
     return {
         getConsoles: getConsoles,
@@ -14,7 +15,8 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
         getAllAlbums: getAllAlbums,
         getAlbum: getAlbum,
         saveSongToFavorites: saveSongToFavorites,
-        getFavoritesSongs: getFavoritesSongs
+        getFavoriteSongs: getFavoriteSongs,
+        getUserData: getUserData
     }
 
     // Get consoles from API
@@ -42,10 +44,15 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
         return $http.post(urlAddFavorites, song)
     }
 
-    function getFavoriteSongs(favoritesObj) {
-        return $http.get(urlGetFavoriteSongs).then(result => {
-            return result.data.result[0].favorites;
+    function getFavoriteSongs(username) {
+        return $http.get(urlGetFavoriteSongs  + '?username=' +username).then(result => {
+            return result.data.result[0];
         })
     }
+
+    function getUserData(username) {
+        return $http.get(urlGetUserData + '?username=' +username).then(result => {
+            return result.data.result[0];
+        })
     }
 }]);

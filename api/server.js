@@ -129,28 +129,22 @@ app.post('/api/albums', (req, res) => {
 
 // TODO: add users login to implement FAVORITES/STARRED songs
 
-// ADD SONG TO FAVORITES
-app.post('/api/add-starred', (req, res) => {
-    // 1. Get current favorites
-    // 2. Insert new favorite song
-    // OR if not exist,
-    // 3. Create favorites new entry { uid.favorites }
-    debugger
-    var query = { "album.url": req.body.song };
-    var updateQuery = { $set : req.body}
-    db.collection('favorites').updateOne(query, updateQuery, { upsert: true },
-    (err, result) => {
+const currentUser = {
+  _id: '111111111111',
+  username: 'ArayaMario'
+}
+app.get('/api/get-favorite-songs', function (req, res) {
+    userFavorites.find({ username: currentUser.username })
+                 .exec((err, result) => {
       if (err) return console.log(err)
+                    res.json({ result })
+                 })
+})
   
-      console.log('Album saved to database', result)
+// GET - ALL USERDATA
+app.get('/api/get-userdata', function (req, res) {
+    users.find({ username: req.query.username}, (err, result) => {
+      if (err) return console.log(err)
       res.json({ result })
     })
 })
-
-// // GET ALL FAVORITE SONGS
-// app.get('/api/get-starred-songs', function (req, res) {
-//     db.collection('favorites').find().toArray((err, result) => {
-//         if (err) return console.log(err)
-//         res.json({ result })
-//     })
-// })
