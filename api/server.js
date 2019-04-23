@@ -2,19 +2,28 @@ const express = require('express')
 const app = express()
 const port = 8080
 const cors = require('cors')
+const mongoose = require('mongoose');
 const compression = require('compression')
-const MongoClient = require('mongodb').MongoClient
 // const mongoUri = "mongodb://arayaromero:arayaromero1@ds057862.mlab.com:57862/mlab-vgm-db"
 const mongoUri = "mongodb://localhost";
-let db = undefined;
 var path = require('path');
 
-MongoClient.connect(mongoUri, { useNewUrlParser: true }, (err, client) => {
-    if (err) return console.log(err)
-    db = client.db('mlab-vgm-db')
-    // Start server
+const UserSchema = require('./models/Users');
+const ConsoleSchema = require('./models/Consoles');
+const UserFavoritesSchema = require('./models/UserFavorites');
+const users = mongoose.model('users', UserSchema)
+const consoles = mongoose.model('consoles', ConsoleSchema)
+const userFavorites = mongoose.model('userFavorites', UserFavoritesSchema)
+
+
+mongoose.connect(mongoUri, { useNewUrlParser: true, dbName: 'mlab-vgm-db' })
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // 1. Connected to Database
+  // 2. Starting express app
     app.listen(port, () => console.log(`VGM API Listening on port: ${port}!`))
-})
+});
 
 app.use(express.json({limit: '10mb', extended: true}));
 app.use(express.urlencoded({limit: '10mb', extended: true }));

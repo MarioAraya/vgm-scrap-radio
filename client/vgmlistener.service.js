@@ -4,7 +4,7 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
     let urlGetConsoles = '/api/consoles';
     let urlGetAlbums = '/api/albums'; 
     let urlGetAlbum = '/api/album'; 
-    let urlAddFavorites = '/api/add-starred'
+    let urlToggleFavoriteSong = '/api/toggle-starred-song'
     let urlGetFavoriteSongs = '/api/get-starred-songs'
     let urlGetAlbumsByConsole = '/api/get-console-albums'
     
@@ -42,7 +42,10 @@ app.factory('VgmListenerFactory', ['$http', function($http) {
         return $http.post(urlAddFavorites, song)
     }
 
-    function getFavoritesSongs() {
-        return $http.get(urlGetFavoriteSongs)
+    function getFavoriteSongs(favoritesObj) {
+        return $http.get(urlGetFavoriteSongs).then(result => {
+            return result.data.result[0].favorites;
+        })
+    }
     }
 }]);

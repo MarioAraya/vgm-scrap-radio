@@ -6,50 +6,24 @@ app.controller('MainCtrl', ['VgmListenerFactory', '$scope',
   let list = document.getElementById('list');
   let track = document.getElementById('track');
   $scope.data = {}
-  $scope.user = {
-    id: 1,
-    name: 'arayamario',
-    email: 'someemail@gmail.com',
-    
-    // List of favorite songs !!
-    favorites:  [{
-      album: 'Shenmue Original Soundtrack', 
-      starred: [
-        {title: "A New Journey", src: "http://66.90.93.122/ost/shenmue-original-soundtrack/jsvnfiqv/A%20New%20Journey.mp3"},
-        {title: "Cherry Blossom Wind Dance", src: "http://66.90.93.122/ost/shenmue-original-soundtrack/ypvqrcrq/Cherry%20Blossom%20Wind%20Dance.mp3"}
-      ]},
-      {
-        album: 'Dracula Battle Perfect Selection', 
-        starred: [
-          {title: "beginning", src: "http://66.90.93.122/ost/dracula-battle-perfect-selection/wkyqtvze/01%20-%20beginning.mp3"},
-          {title: "vampire killer", src: "http://66.90.93.122/ost/dracula-battle-perfect-selection/gaccfgaz/07%20-%20vampire%20killer.mp3", howl: null}
-        ]}
-    ]
-  }
   $scope.data.mode = "Menu" // Muestra menu en overlay hamburger menu
+    
+  // currentUser object including All Favorite songs
+  let currentUser = {
+    username: 'ArayaMario',
+    email: 'arayaromero@gmail.com',
+    favorites: []
+  }
   window["starredBtn"] = document.getElementById("starredBtn");
 
-  $scope.playSong = function(track) {
-    if (currentSong) {
-      currentSong.stop()
-      currentSong.unload()
-      currentSong = null;
-    }
-    currentSong = new Howl({
-      src: [track.track_href],
-      autoplay: true
-    });
-    currentSong.play();
-  };
-
-  // Carga console list
   onInit = function() {
-    VgmListenerFactory.getConsoles().then(function(res) {
-      $scope.consoles = res.data.result;
-    })
-    .catch(err => console.log('getConsoles error: ', err))
-
+    getConsoles();
     getScrappedAlbums();
+    getUserdata();
+    setInitialUI();
+  }
+
+  setInitialUI = function() {
     list.innerHTML = '';
     track.onclick = function(ev) {
       player.togglePlaylist();
