@@ -30,6 +30,7 @@ app.factory('UtilFactory', ['VgmListenerFactory', function(VgmListenerFactory) {
           }
         }        
         else {
+          debugger
           console.error('User cannot be found on DB')
           // TODO: create new user flow ...
         }
@@ -59,29 +60,40 @@ app.factory('UtilFactory', ['VgmListenerFactory', function(VgmListenerFactory) {
      *       - save songs Favorites with albumName or get it from DB in a query
      */
     function getFavoriteSongs(currentUser, $scope){
-      VgmListenerFactory.getFavoriteSongs(currentUser.username).then( result => {
-        if (!result) return;
-        let favoritesAsAlbum = convertToAlbum(result);
-        $scope.albumSelected(favoritesAsAlbum)
-        toggleMainMenu();
-      })
+      VgmListenerFactory.getFavoriteSongs(currentUser.username)
+        .then( result => {
+          if (!result) return;
+          let favoritesAsAlbum = convertToAlbum(result);
+          currentUser.favorites = result.favorites;
+          $scope.albumSelected(favoritesAsAlbum)
+          toggleMainMenu();
+          debugger
+        }).catch(err => {
+          console.error('Error al guardar favoritos', err);
+        })
     }
 
-    function toggleFavoriteSong(currentUser, currentSong, album_id) {
-      let song = {
-        album_id: album_id, 
-        song_name: currentSong.title, 
-        song_url: currentSong.src
+    function toggleFavoriteSong(currentUser, song, album) {
+      let songObj = {
+        album_id: album.id, 
+        album_name: album.title, 
+        song_name: song.title, 
+        song_url: song.src
       }
       let songIsSaved = currentUser.favorites.find(fav => {
-        if (fav.url === currentSong.src) return true;
+        if (fav.url === song.src) return true;
       })
       if (!songIsSaved)
-        currentUser.favorites.push(song);
+        currentUser.favorites.push(songObj);
       else
-        currentUser.favorites.pop(song);
+        currentUser.favorites.pop(songObj);
 
-
+      VgmListenerFactory.setFavoriteSongs(currentUser.favorites)
+        .then( result => {
+            if (!result) return;
+            currentUser.favorites = result.favorites;
+            console.log('Favorite songs saved to BD')
+        })
     }
 
     function toggleStarIcon(track_index, currentSong) {

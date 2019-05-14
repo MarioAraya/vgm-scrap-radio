@@ -20,8 +20,8 @@ app.controller('MainCtrl', ['VgmListenerFactory', 'UtilFactory', '$scope',
     UtilFactory.getConsoles($scope);
     UtilFactory.getScrappedAlbums($scope);
     UtilFactory.getUserdata(currentUser);
-    UtilFactory.setInitialUI();
-  }
+    UtilFactory.getFavoriteSongs(currentUser, $scope);
+a  }
 
   // Album is selected and playlist is created
   $scope.albumSelected = function(album) {
@@ -41,7 +41,7 @@ app.controller('MainCtrl', ['VgmListenerFactory', 'UtilFactory', '$scope',
 
   loadSongsObject = function(albumData) {
     $scope.album = albumData.album;
-    // $scope.album.id = albumData._id;
+    $scope.album.id = albumData._id;
     
     var htmlSubtitle = `${$scope.album.title} <span>(${ $scope.album.totalTime } 
                         - ${ $scope.album.totalSize })</span>`;
@@ -89,6 +89,9 @@ app.controller('MainCtrl', ['VgmListenerFactory', 'UtilFactory', '$scope',
       player.togglePlaylist();
   };
 
+  $scope.showFavorites = function(){
+    UtilFactory.getFavoriteSongs(currentUser, $scope);
+  }
   $scope.toggleFavorite = function(track_index){
     if (track_index === undefined) track_index = player.index;
 
@@ -96,23 +99,10 @@ app.controller('MainCtrl', ['VgmListenerFactory', 'UtilFactory', '$scope',
     if (!currentSong || !currentSong.src) return;
     
     UtilFactory.toggleStarIcon(track_index, currentSong)
-    UtilFactory.toggleFavoriteSong(currentUser, currentSong, $scope.album.id);
+    UtilFactory.toggleFavoriteSong(currentUser, currentSong, $scope.album);
   }
 
-  $scope.showFavorites = function(){
-    UtilFactory.getFavoriteSongs(currentUser, $scope);
-    UtilFactory.toggleMainMenu();
-  }
+  
 
   onInit();  
-
-  // Sample songs :
-  // $scope.songsSample = [
-  //   'http://66.90.93.122/ost/super-mario-world-original-soundtrack/kssyzysfyy/28%20-%20Ending.mp3',
-  //   'http://66.90.93.122/ost/rockman-forte-original-soundtrack-version-01/keitqwst/09%20Cold%20Man.mp3',
-  //   'http://66.90.93.122/ost/rockman-forte-original-soundtrack-version-01/yaerljpx/03%20Introduction%20Stage.mp3',
-  //   'http://66.90.93.122/ost/vortex-snes/fclwkmlo/08_Voltair.mp3',
-  //   'http://66.90.93.122/ost/ace-combat-4-shattered-skies-original-soundtracks/yzyktcfy/216%20blue%20skies.mp3'
-  // ]
-
 }]);

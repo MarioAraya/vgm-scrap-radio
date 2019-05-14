@@ -15,6 +15,11 @@ const users = mongoose.model('users', UserSchema)
 const consoles = mongoose.model('consoles', ConsoleSchema)
 const userFavorites = mongoose.model('userFavorites', UserFavoritesSchema)
 
+const currentUser = {
+    // TODO: add users login to implement FAVORITES/STARRED songs
+    _id: '111111111111',
+    username: 'ArayaMario'
+}
 
 mongoose.connect(mongoUri, { useNewUrlParser: true, dbName: 'mlab-vgm-db' })
 var db = mongoose.connection;
@@ -22,7 +27,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // 1. Connected to Database
   // 2. Starting express app
-    app.listen(port, () => console.log(`VGM API Listening on port: ${port}!`))
+  app.listen(port, () => console.log(`VGM API Listening on port: ${port}!`))
 });
 
 app.use(express.json({limit: '10mb', extended: true}));
@@ -93,6 +98,7 @@ app.get('/api/album', function (req, res) {
         else {
             let specFile = 'cypress/integration/scrapping-scripts/getsongs-cy.js'
             let processStr = `npx cypress run 
+                            --no-exit
                             --env ALBUM_URL="/game-soundtracks/album/${req.query.album}" 
                             --spec "${specFile}" `;
                             //--no-exit
@@ -130,24 +136,52 @@ app.post('/api/albums', (req, res) => {
     })
 })
 
-// TODO: add users login to implement FAVORITES/STARRED songs
+// POST - add or remove song from user's favorite songs
+app.post('/api/toggle-favorite-song', (req, res) => {
+    // 1. Get all songs
+    // 2. if, song already in list  => remove
+    //    else, if song is not on list => add 
 
-const currentUser = {
-  _id: '111111111111',
-  username: 'ArayaMario'
-}
+    //TODO: complete this method with mongo or redis (new branch)
+
+    // var query = { username: currentUser.username },
+    //     update = {},
+    //     options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+    // // Find the document or add it (Upsert)
+    // userFavorites.findOneAndUpdate(query, update, options)
+    //     .then((err, result) => {
+    //         debugger
+    //         res.json({ result: req.body.userAndFavoriteSongs })
+    //     }, reason => {reason; debugger} ).catch( err => {
+    //         debugger
+    //         res.json({ err: err, msg: 'Error, some error occuried when trying to save favorites.' })
+    //     }).catch(err => {
+    //         console.error('Error al guardar favoritos', err);
+    //     })
+    
+})
+
+// GET ALL FAVORITE SONGS by username
 app.get('/api/get-favorite-songs', function (req, res) {
     userFavorites.find({ username: currentUser.username })
                  .exec((err, result) => {
-      if (err) return console.log(err)
+                    if (err) return console.log(err)
                     res.json({ result })
-                 })
+                 }).catch(err => {
+                    console.error('Error al obtener favoritos', err);
+                })
 })
-  
+
 // GET - ALL USERDATA
 app.get('/api/get-userdata', function (req, res) {
     users.find({ username: req.query.username}, (err, result) => {
-      if (err) return console.log(err)
-      res.json({ result })
+        if (err) return console.log(err)
+        res.json({ result })
+    })
+    userFavorites.find({ username: currentUser.username })
+        .exec((err, result) => {
+        if (err) return console.log(err)
+        res.json({ result })
     })
 })
