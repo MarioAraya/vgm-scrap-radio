@@ -33,12 +33,14 @@
   },
   "homepage": "https://github.com/MarioAraya/vgm-scrap-radio#readme",
   "dependencies": {
+    "bluebird": "^3.5.4",
     "compression": "^1.7.3",
     "cors": "^2.8.5",
     "cypress": "^3.1.4",
     "express": "^4.16.4",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.19",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "redis": "^2.8.0"
   }
 }
