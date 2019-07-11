@@ -27,7 +27,6 @@ app.factory('UtilFactory', ['VgmListenerFactory', function(VgmListenerFactory) {
           }
         }        
         else {
-          debugger
           console.error('User cannot be found on DB')
           // TODO: create new user flow ...
         }

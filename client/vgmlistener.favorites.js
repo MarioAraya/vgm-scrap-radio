@@ -13,7 +13,6 @@ app.factory('FavoritesFactory', ['VgmListenerFactory', function (VgmListenerFact
     function getFavoriteSongs(currentUser, $scope) {
         VgmListenerFactory.getFavoriteSongs(currentUser.username)
             .then(favorites => {
-                debugger
                 if (!favorites) return;
                 let favoritesAsAlbum = convertToAlbum(favorites);
                 currentUser.favorites = favorites.favorites;
