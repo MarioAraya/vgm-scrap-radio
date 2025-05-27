@@ -1,12 +1,16 @@
 # Descripcion:
-La idea es hacer un "escuchador de musica vgm" usando las bases de datos de sitios publicos 
-mediante scrapping para llenar una API JSON. El front sera un reproductor html5/python/reactnative.
+VGM (Videogame Music) Player - Multiplatform - Spotify's like
+Scraping data and music public data from VGM dedicated sites like [www.zophar.net][1] and [khinsider.com][2]
 
-# Description:
-The goal is make an "video game music mobile listener", using scrapped public data from VGM dedicated 
-sites like [www.zophar.net][1] and [khinsider.com][2] to get every mp3 and album data and store it in an Firebase db.
-
-The front-ent listener (the actual app) will be a python or a simple html5 <audio> playlist or a react-native app.
+## Setup on MacOS:
+    install dependencies:
+        npm i
+    install mondodb server
+        brew tap mongodb/brew
+        brew install mongodb-community
+        brew services start mongodb/brew/mongodb-community
+    run cypress script to first scrap neccesary data
+        ./node_modules/cypress/bin/cypress run ./cypress/integration/scrapping-scripts/getconsoles-cy.js
 
 ### Features:
 1.  Scrapp a site with vgm music and get albums and tracks.
